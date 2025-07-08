@@ -1,6 +1,8 @@
 spring:
     application:
         name: hmac
+server:
+    port: 8086
 
 hmac:
     secret-key: 1234567890ABCDEF1234567890ABCDEF
