@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.stream.Collectors;
 
 @Component
 public class HmacRequestFilter extends OncePerRequestFilter {
@@ -23,6 +24,13 @@ public class HmacRequestFilter extends OncePerRequestFilter {
 
         String signature = request.getHeader("Sign");
         if (signature == null) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Missing HMAC Signature");
+            return;
+        }
+
+        String payload = request.getReader().lines().collect(Collectors.joining());
+        if (!hmacService.isValidSignature(payload, signature)) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("Invalid HMAC Signature");
             return;
