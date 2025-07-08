@@ -1,0 +1,6 @@
+spring:
+    application:
+        name: hmac
+
+hmac:
+    secret-key: 1234567890ABCDEF1234567890ABCDEF
